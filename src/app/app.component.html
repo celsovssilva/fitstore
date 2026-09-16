@@ -1,0 +1,137 @@
+<!-- ===== HEADER ===== -->
+<header class="header">
+  <div class="container header-inner">
+    <div class="logo">{{ storeName }}<span class="dot">.</span></div>
+  </div>
+</header>
+
+<!-- ===== BARRA DE CATEGORIAS ===== -->
+<nav class="category-nav">
+  <div class="container category-nav-inner">
+    <div class="categories-dropdown">
+      <button class="categories-btn" (click)="toggleCategoriesMenu()">
+        <span class="hamburger">☰</span>
+        CATEGORIAS
+        <span class="chevron" [class.open]="showCategoriesMenu">⌄</span>
+      </button>
+
+      <div class="categories-panel" *ngIf="showCategoriesMenu">
+        <button
+          *ngFor="let cat of categories"
+          class="categories-panel-item"
+          (click)="applyFilter(cat)">
+          {{ cat }}
+        </button>
+      </div>
+    </div>
+
+    <div class="nav-scroll">
+      <button
+        *ngFor="let item of navItems"
+        class="nav-link"
+        [class.active]="activeFilter === item.filter"
+        (click)="applyFilter(item.filter)">
+        {{ item.label }}
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="container hero-inner">
+    <h1>Equipamentos e suplementos <span class="highlight">para o seu treino</span></h1>
+    <p>Escolha os produtos, monte seu pedido e finalize direto no WhatsApp com nosso time.</p>
+    <a class="btn btn-primary" href="#produtos">Ver produtos</a>
+  </div>
+</section>
+
+<!-- ===== PROMOÇÕES + RESTANTE ===== -->
+<section class="container" id="produtos">
+  <div class="page-layout">
+
+    <!-- ===== COLUNA PRINCIPAL: PROMOÇÕES ===== -->
+    <div class="promo-col">
+      <h2 class="section-title">🔥 Promoções da semana</h2>
+
+      <div class="promo-grid">
+        <div class="product-card promo-card" *ngFor="let product of promoProducts">
+          <span class="promo-badge">OFERTA</span>
+          <img [src]="product.image" [alt]="product.name" class="product-img" />
+          <div class="product-body">
+            <span class="product-category">{{ product.category }}</span>
+            <h3>{{ product.name }}</h3>
+            <p class="product-desc">{{ product.description }}</p>
+            <div class="price-row">
+              <span class="old-price" *ngIf="product.oldPrice">R$ {{ product.oldPrice.toFixed(2) }}</span>
+              <span class="product-price">R$ {{ product.price.toFixed(2) }}</span>
+            </div>
+
+            <div class="product-actions">
+              <button
+                class="btn btn-outline"
+                [class.selected]="isInCart(product)"
+                (click)="toggleCart(product)">
+                {{ isInCart(product) ? '✓ Selecionado' : '+ Selecionar' }}
+              </button>
+              <button class="btn btn-whatsapp" (click)="buyOnWhatsapp(product)">
+                Comprar agora
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+        <aside class="rest-col">
+      <h2 class="section-title">Outros produtos</h2>
+
+      <div class="rest-list" *ngIf="restProducts.length > 0; else emptyState">
+        <div class="rest-item" *ngFor="let product of restProducts">
+          <img [src]="product.image" [alt]="product.name" class="rest-img" />
+          <div class="rest-info">
+            <h4>{{ product.name }}</h4>
+            <span class="rest-price">R$ {{ product.price.toFixed(2) }}</span>
+          </div>
+          <div class="rest-actions">
+            <button
+              class="mini-btn mini-outline"
+              [class.selected]="isInCart(product)"
+              (click)="toggleCart(product)"
+              title="Selecionar">
+              {{ isInCart(product) ? '✓' : '+' }}
+            </button>
+            <button class="mini-btn mini-whatsapp" (click)="buyOnWhatsapp(product)" title="Comprar agora">
+              Comprar
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #emptyState>
+        <p class="empty-hint">Clique em uma categoria no menu acima para ver os produtos aqui. 👆</p>
+      </ng-template>
+    </aside>
+
+  </div>
+</section>
+
+<!-- ===== BARRA FLUTUANTE DO CARRINHO ===== -->
+<div class="cart-bar" *ngIf="cartCount > 0">
+  <div class="container cart-bar-inner">
+    <div class="cart-info">
+      <strong>{{ cartCount }}</strong> item(s) selecionado(s) —
+      <strong>R$ {{ cartTotal.toFixed(2) }}</strong>
+    </div>
+    <button class="btn btn-whatsapp" (click)="buyOnWhatsapp()">
+      Finalizar pedido no WhatsApp
+    </button>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <p>© {{ storeName }} — Todos os direitos reservados.</p>
+  </div>
+</footer>
