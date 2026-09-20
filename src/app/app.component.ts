@@ -11,44 +11,46 @@ import { PRODUCTS } from './data/products';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  // ===== CONFIGURAÇÕES DA LOJA =====
-  // Troque pelo número de WhatsApp do fornecedor (código do país + DDD + número, só dígitos)
-  readonly whatsappNumber = '5582999999999';
+  
   readonly storeName = 'FitStore';
+  readonly whatsappNumber = '5582993663318';
 
-  // ===== DADOS =====
+  
   products: Product[] = PRODUCTS;
 
-  // Categorias reais, extraídas automaticamente dos produtos (usadas no dropdown "Categorias")
   categories: string[] = [...new Set(this.products.map(p => p.category))];
 
-  // Itens do menu horizontal (igual ao print de referência).
-  // "filter" é o valor usado para filtrar: pode ser o nome de uma categoria,
-  // ou uma das palavras-chave especiais: 'Todos' | 'TOP20' | 'LANCAMENTOS' | 'OFERTAS'
-  navItems: { label: string; filter: string }[] = [
-    { label: 'Top 20', filter: 'TOP20' },
-    { label: 'Lançamentos', filter: 'LANCAMENTOS' },
-    { label: 'Whey Protein', filter: 'Whey Protein' },
-    { label: 'Creatina', filter: 'Creatina' },
-    { label: 'Vitaminas', filter: 'Vitaminas' },
-    { label: 'Pré-treino', filter: 'Pré-treino' },
-    { label: 'Objetivos', filter: 'Todos' },
-    { label: 'Snacks', filter: 'Snacks' },
-    { label: 'Roupas', filter: 'Roupas' },
-    { label: 'Acessórios', filter: 'Acessorios' },
-    { label: 'Kits', filter: 'Kits' },
-    { label: 'Ofertas', filter: 'OFERTAS' }
-  ];
+  get navItems(): { label: string; filter: string }[] {
+    const filtrosGerais = [
+      { label: 'Mais vendidos', filter: 'TOP20' },
+      { label: 'Lançamentos', filter: 'LANCAMENTOS' },
+      { label: 'Ofertas', filter: 'OFERTAS' }
+    ];
+    const itensDeCategoria = this.categories.map(cat => ({ label: cat, filter: cat }));
+    return [...filtrosGerais, ...itensDeCategoria];
+  }
 
-    activeFilter: string | null = null;
+  activeFilter: string | null = null;
   showCategoriesMenu = false;
 
-  // carrinho: guarda os IDs dos produtos selecionados
+  
+  showPromotions(): void {
+    this.activeFilter = null;
+    this.showCategoriesMenu = false;
+  }
+
+  
+  get activeFilterLabel(): string {
+    const item = this.navItems.find(i => i.filter === this.activeFilter);
+    return item ? item.label : '';
+  }
+
   cart: Set<number> = new Set();
 
   toggleCategoriesMenu(): void {
     this.showCategoriesMenu = !this.showCategoriesMenu;
   }
+
   applyFilter(filter: string): void {
     this.activeFilter = filter;
     this.showCategoriesMenu = false;
@@ -58,8 +60,6 @@ export class AppComponent {
     switch (this.activeFilter) {
       case null:
         return [];
-      case 'Todos':
-        return this.products;
       case 'TOP20':
         return this.products.filter(p => p.topSeller);
       case 'LANCAMENTOS':
@@ -71,22 +71,10 @@ export class AppComponent {
     }
   }
 
-  // Produtos marcados como "promo: true" no products.ts (sempre exibidos em destaque)
   get promoProducts(): Product[] {
     return this.products.filter(p => p.promo);
   }
 
-  // Antes de clicar em algum item da barra de categorias, a lista fica vazia.
-  // Quando o filtro é "Todos", tira as promoções pra não repetir com a coluna de promoções.
-  get restProducts(): Product[] {
-    if (this.activeFilter === null) {
-      return [];
-    }
-    if (this.activeFilter === 'Todos') {
-      return this.filteredProducts.filter(p => !p.promo);
-    }
-    return this.filteredProducts;
-  }
   get cartItems(): Product[] {
     return this.products.filter(p => this.cart.has(p.id));
   }
@@ -111,7 +99,6 @@ export class AppComponent {
     }
   }
 
-  // Gera o link do WhatsApp com a mensagem pronta e abre em nova aba
   buyOnWhatsapp(product?: Product): void {
     const items = product ? [product] : this.cartItems;
 

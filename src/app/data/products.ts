@@ -1,22 +1,25 @@
 import { Product } from '../models/product.model';
 
+
 export const PRODUCTS: Product[] = [
+  
   {
     id: 1,
     name: 'Whey Protein Concentrado 900g',
-    category: 'Whey Protein',
+    category: 'Suplementos',
     price: 129.9,
     topSeller: true,
-    image: 'https://placehold.co/400x400/1a1a1a/39ff14?text=Whey+Protein',
+    image: 'https://placehold.co/400x400/1a1a1a/39ff14?text=Produto+1',
     description: 'Proteína de alta absorção para ganho de massa magra. Sabor chocolate.'
   },
   {
     id: 2,
     name: 'Creatina Monohidratada 300g',
-    category: 'Creatina',
+    category: 'Suplementos',
     price: 79.9,
-    topSeller: true,
-    image: 'https://placehold.co/400x400/1a1a1a/39ff14?text=Creatina',
+    oldPrice: 99.9,
+    promo: true,
+    image: 'https://placehold.co/400x400/1a1a1a/39ff14?text=Produto+2',
     description: 'Aumenta força e performance nos treinos. 100% pura.'
   },
   {
@@ -25,88 +28,54 @@ export const PRODUCTS: Product[] = [
     category: 'Vitaminas',
     price: 49.9,
     isNew: true,
-    image: 'https://placehold.co/400x400/1a1a1a/39ff14?text=Vitaminas',
+    image: 'https://placehold.co/400x400/1a1a1a/39ff14?text=Produto+3',
     description: 'Complexo com vitaminas e minerais para o dia a dia do atleta.'
   },
   {
     id: 4,
-    name: 'Pré-treino Explosivo 300g',
-    category: 'Pré-treino',
-    price: 99.9,
+    name: 'Kit Iniciante (Whey + Coqueteleira)',
+    category: 'Kits',
+    price: 179.9,
     isNew: true,
-    topSeller: true,
-    image: 'https://placehold.co/400x400/1a1a1a/39ff14?text=Pre-treino',
-    description: 'Energia e foco para treinos de alta intensidade.'
+    image: 'https://placehold.co/400x400/1a1a1a/39ff14?text=Produto+4',
+    description: 'Tudo que você precisa para começar a treinar com o pé direito.'
   },
+
+ 
   {
     id: 5,
-    name: 'Barra de Proteína Chocolate (cx 12un)',
-    category: 'Snacks',
-    price: 89.9,
-    image: 'https://placehold.co/400x400/1a1a1a/39ff14?text=Snacks',
-    description: 'Lanche prático rico em proteína, baixo em açúcar.'
-  },
-  {
-    id: 6,
     name: 'Legging Fitness Feminina',
     category: 'Roupas',
     price: 69.9,
     oldPrice: 89.9,
     promo: true,
-    image: 'https://placehold.co/400x400/1a1a1a/39ff14?text=Legging',
+    topSeller: true,
+    image: 'https://placehold.co/400x400/1a1a1a/39ff14?text=Produto+5',
     description: 'Tecido compressivo, alta elasticidade e conforto para treinar.'
   },
   {
-    id: 7,
+    id: 6,
     name: 'Top Fitness Feminino',
     category: 'Roupas',
     price: 44.9,
-    oldPrice: 59.9,
-    promo: true,
-    image: 'https://placehold.co/400x400/1a1a1a/39ff14?text=Top+Fitness',
+    image: 'https://placehold.co/400x400/1a1a1a/39ff14?text=Produto+6',
     description: 'Sustentação ideal para treinos de alta intensidade.'
   },
   {
-    id: 8,
+    id: 7,
     name: 'Camiseta Dry Fit Masculina',
     category: 'Roupas',
     price: 69.9,
-    image: 'https://placehold.co/400x400/1a1a1a/39ff14?text=Dry+Fit',
+    isNew: true,
+    image: 'https://placehold.co/400x400/1a1a1a/39ff14?text=Produto+7',
     description: 'Tecido que absorve o suor e seca rápido durante o treino.'
   },
   {
-    id: 9,
+    id: 8,
     name: 'Garrafa Squeeze 1L',
-    category: 'Acessorios',
+    category: 'Acessórios',
     price: 39.9,
-    image: 'https://placehold.co/400x400/1a1a1a/39ff14?text=Squeeze',
+    image: 'https://placehold.co/400x400/1a1a1a/39ff14?text=Produto+8',
     description: 'Garrafa térmica com marcação de horário para hidratação.'
-  },
-  {
-    id: 10,
-    name: 'Luvas de Treino',
-    category: 'Acessorios',
-    price: 49.9,
-    image: 'https://placehold.co/400x400/1a1a1a/39ff14?text=Luvas',
-    description: 'Proteção e firmeza para exercícios com peso.'
-  },
-  {
-    id: 11,
-    name: 'Faixa Elástica Kit (3un)',
-    category: 'Kits',
-    price: 29.9,
-    oldPrice: 44.9,
-    promo: true,
-    image: 'https://placehold.co/400x400/1a1a1a/39ff14?text=Faixas',
-    description: 'Kit com 3 níveis de resistência para treino funcional.'
-  },
-  {
-    id: 12,
-    name: 'Kit Iniciante (Whey + Creatina + Coqueteleira)',
-    category: 'Kits',
-    price: 179.9,
-    isNew: true,
-    image: 'https://placehold.co/400x400/1a1a1a/39ff14?text=Kit+Iniciante',
-    description: 'Tudo que você precisa para começar a treinar com o pé direito.'
   }
 ];

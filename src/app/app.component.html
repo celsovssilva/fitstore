@@ -1,11 +1,11 @@
-<!-- ===== HEADER ===== -->
+
 <header class="header">
   <div class="container header-inner">
     <div class="logo">{{ storeName }}<span class="dot">.</span></div>
   </div>
 </header>
 
-<!-- ===== BARRA DE CATEGORIAS ===== -->
+
 <nav class="category-nav">
   <div class="container category-nav-inner">
     <div class="categories-dropdown">
@@ -40,83 +40,95 @@
 <!-- ===== HERO ===== -->
 <section class="hero">
   <div class="container hero-inner">
-    <h1>Equipamentos e suplementos <span class="highlight">para o seu treino</span></h1>
+    <h1>Tudo pro seu treino <span class="highlight">em um só lugar</span></h1>
     <p>Escolha os produtos, monte seu pedido e finalize direto no WhatsApp com nosso time.</p>
     <a class="btn btn-primary" href="#produtos">Ver produtos</a>
   </div>
 </section>
 
-<!-- ===== PROMOÇÕES + RESTANTE ===== -->
+
 <section class="container" id="produtos">
-  <div class="page-layout">
 
-    <!-- ===== COLUNA PRINCIPAL: PROMOÇÕES ===== -->
-    <div class="promo-col">
-      <h2 class="section-title">🔥 Promoções da semana</h2>
+  <!-- ===== ABAS ===== -->
+  <div class="content-tabs">
+    <button
+      class="tab"
+      [class.active]="activeFilter === null"
+      (click)="showPromotions()">
+      🔥 Promoções
+    </button>
+    <button class="tab active" *ngIf="activeFilter !== null">
+      {{ activeFilterLabel }}
+    </button>
+  </div>
 
-      <div class="promo-grid">
-        <div class="product-card promo-card" *ngFor="let product of promoProducts">
-          <span class="promo-badge">OFERTA</span>
-          <img [src]="product.image" [alt]="product.name" class="product-img" />
-          <div class="product-body">
-            <span class="product-category">{{ product.category }}</span>
-            <h3>{{ product.name }}</h3>
-            <p class="product-desc">{{ product.description }}</p>
-            <div class="price-row">
-              <span class="old-price" *ngIf="product.oldPrice">R$ {{ product.oldPrice.toFixed(2) }}</span>
-              <span class="product-price">R$ {{ product.price.toFixed(2) }}</span>
-            </div>
+  <div *ngIf="activeFilter === null">
+    <div class="promo-grid">
+      <div class="product-card promo-card" *ngFor="let product of promoProducts">
+        <span class="promo-badge">OFERTA</span>
+        <img [src]="product.image" [alt]="product.name" class="product-img" />
+        <div class="product-body">
+          <span class="product-category">{{ product.category }}</span>
+          <h3>{{ product.name }}</h3>
+          <p class="product-desc">{{ product.description }}</p>
+          <div class="price-row">
+            <span class="old-price" *ngIf="product.oldPrice">R$ {{ product.oldPrice.toFixed(2) }}</span>
+            <span class="product-price">R$ {{ product.price.toFixed(2) }}</span>
+          </div>
 
-            <div class="product-actions">
-              <button
-                class="btn btn-outline"
-                [class.selected]="isInCart(product)"
-                (click)="toggleCart(product)">
-                {{ isInCart(product) ? '✓ Selecionado' : '+ Selecionar' }}
-              </button>
-              <button class="btn btn-whatsapp" (click)="buyOnWhatsapp(product)">
-                Comprar agora
-              </button>
-            </div>
+          <div class="product-actions">
+            <button
+              class="btn btn-outline"
+              [class.selected]="isInCart(product)"
+              (click)="toggleCart(product)">
+              {{ isInCart(product) ? '✓ Selecionado' : '+ Selecionar' }}
+            </button>
+            <button class="btn btn-whatsapp" (click)="buyOnWhatsapp(product)">
+              Comprar agora
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== ABA: CATEGORIA SELECIONADA ===== -->
+  <div *ngIf="activeFilter !== null">
+    <div class="promo-grid" *ngIf="filteredProducts.length > 0; else emptyState">
+      <div class="product-card" *ngFor="let product of filteredProducts">
+        <span class="promo-badge" *ngIf="product.promo">OFERTA</span>
+        <img [src]="product.image" [alt]="product.name" class="product-img" />
+        <div class="product-body">
+          <span class="product-category">{{ product.category }}</span>
+          <h3>{{ product.name }}</h3>
+          <p class="product-desc">{{ product.description }}</p>
+          <div class="price-row">
+            <span class="old-price" *ngIf="product.oldPrice">R$ {{ product.oldPrice.toFixed(2) }}</span>
+            <span class="product-price">R$ {{ product.price.toFixed(2) }}</span>
+          </div>
+
+          <div class="product-actions">
+            <button
+              class="btn btn-outline"
+              [class.selected]="isInCart(product)"
+              (click)="toggleCart(product)">
+              {{ isInCart(product) ? '✓ Selecionado' : '+ Selecionar' }}
+            </button>
+            <button class="btn btn-whatsapp" (click)="buyOnWhatsapp(product)">
+              Comprar agora
+            </button>
           </div>
         </div>
       </div>
     </div>
 
-        <aside class="rest-col">
-      <h2 class="section-title">Outros produtos</h2>
-
-      <div class="rest-list" *ngIf="restProducts.length > 0; else emptyState">
-        <div class="rest-item" *ngFor="let product of restProducts">
-          <img [src]="product.image" [alt]="product.name" class="rest-img" />
-          <div class="rest-info">
-            <h4>{{ product.name }}</h4>
-            <span class="rest-price">R$ {{ product.price.toFixed(2) }}</span>
-          </div>
-          <div class="rest-actions">
-            <button
-              class="mini-btn mini-outline"
-              [class.selected]="isInCart(product)"
-              (click)="toggleCart(product)"
-              title="Selecionar">
-              {{ isInCart(product) ? '✓' : '+' }}
-            </button>
-            <button class="mini-btn mini-whatsapp" (click)="buyOnWhatsapp(product)" title="Comprar agora">
-              Comprar
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <ng-template #emptyState>
-        <p class="empty-hint">Clique em uma categoria no menu acima para ver os produtos aqui. 👆</p>
-      </ng-template>
-    </aside>
-
+    <ng-template #emptyState>
+      <p class="empty-hint">Nenhum produto nessa categoria ainda.</p>
+    </ng-template>
   </div>
+
 </section>
 
-<!-- ===== BARRA FLUTUANTE DO CARRINHO ===== -->
 <div class="cart-bar" *ngIf="cartCount > 0">
   <div class="container cart-bar-inner">
     <div class="cart-info">
@@ -129,7 +141,7 @@
   </div>
 </div>
 
-<!-- ===== FOOTER ===== -->
+
 <footer class="footer">
   <div class="container">
     <p>© {{ storeName }} — Todos os direitos reservados.</p>
