@@ -11,11 +11,11 @@ import { PRODUCTS } from './data/products';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  
+  // ===== CONFIGURAÇÕES DA LOJA =====
   readonly storeName = 'FitStore';
-  readonly whatsappNumber = '5582993663318';
+  readonly whatsappNumber = '5582999999999'; // código do país + DDD + número, só dígitos
 
-  
+  // ===== DADOS =====
   products: Product[] = PRODUCTS;
 
   categories: string[] = [...new Set(this.products.map(p => p.category))];
@@ -33,19 +33,15 @@ export class AppComponent {
   activeFilter: string | null = null;
   showCategoriesMenu = false;
 
-  
   showPromotions(): void {
     this.activeFilter = null;
     this.showCategoriesMenu = false;
   }
 
-  
   get activeFilterLabel(): string {
     const item = this.navItems.find(i => i.filter === this.activeFilter);
     return item ? item.label : '';
   }
-
-  cart: Set<number> = new Set();
 
   toggleCategoriesMenu(): void {
     this.showCategoriesMenu = !this.showCategoriesMenu;
@@ -75,6 +71,25 @@ export class AppComponent {
     return this.products.filter(p => p.promo);
   }
 
+  // ===== TAMANHOS =====
+  // Guarda o tamanho escolhido de cada produto: chave = id do produto, valor = tamanho.
+  selectedSizes = new Map<number, string>();
+
+  hasSizes(product: Product): boolean {
+    return !!product.sizes && product.sizes.length > 0;
+  }
+
+  getSelectedSize(product: Product): string | undefined {
+    return this.selectedSizes.get(product.id);
+  }
+
+  selectSize(product: Product, size: string): void {
+    this.selectedSizes.set(product.id, size);
+  }
+
+  // ===== CARRINHO: SELEÇÃO DE MÚLTIPLOS PRODUTOS =====
+  cart: Set<number> = new Set();
+
   get cartItems(): Product[] {
     return this.products.filter(p => this.cart.has(p.id));
   }
@@ -91,15 +106,31 @@ export class AppComponent {
     return this.cart.has(product.id);
   }
 
+  // Adiciona/remove o produto do carrinho. Se o produto tem tamanhos
+  // e nenhum foi escolhido ainda, pede pra escolher antes de prosseguir.
   toggleCart(product: Product): void {
     if (this.cart.has(product.id)) {
       this.cart.delete(product.id);
-    } else {
-      this.cart.add(product.id);
+      return;
     }
+
+    if (this.hasSizes(product) && !this.getSelectedSize(product)) {
+      alert('Escolha um tamanho antes de selecionar este produto.');
+      return;
+    }
+
+    this.cart.add(product.id);
   }
 
+  // Gera o link do WhatsApp com a mensagem pronta e abre em nova aba.
+  // Se "product" for passado, manda só aquele item (botão "Comprar agora").
+  // Se não, manda todos os itens marcados no carrinho (botão "Finalizar pedido").
   buyOnWhatsapp(product?: Product): void {
+    if (product && this.hasSizes(product) && !this.getSelectedSize(product)) {
+      alert('Escolha um tamanho antes de comprar este produto.');
+      return;
+    }
+
     const items = product ? [product] : this.cartItems;
 
     if (items.length === 0) {
@@ -111,7 +142,9 @@ export class AppComponent {
 
     let total = 0;
     items.forEach(item => {
-      message += `• ${item.name} - R$ ${item.price.toFixed(2)}%0A`;
+      const size = this.getSelectedSize(item);
+      const sizeText = size ? ` (Tamanho: ${size})` : '';
+      message += `• ${item.name}${sizeText} - R$ ${item.price.toFixed(2)}%0A`;
       total += item.price;
     });
 

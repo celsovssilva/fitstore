@@ -7,6 +7,7 @@ export interface Product {
   promo?: boolean;
   topSeller?: boolean;
   isNew?: boolean;
+  sizes?: string[];   
   image: string;
   description: string;
 }

@@ -228,7 +228,7 @@
   border-bottom-color: #39ff14;
 }
 
-/* ===== GRID DE PROMOÇÕES ===== */
+/* ===== GRID DE PRODUTOS ===== */
 .promo-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -343,6 +343,48 @@
   font-size: 13px;
   color: #999;
   text-decoration: line-through;
+}
+
+/* ===== SELETOR DE TAMANHO ===== */
+.size-selector {
+  margin-top: 6px;
+}
+
+.size-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #555;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.size-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.size-chip {
+  min-width: 34px;
+  height: 34px;
+  padding: 0 8px;
+  border-radius: 6px;
+  border: 1.5px solid #ccc;
+  background: #fff;
+  color: #333;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.size-chip:hover {
+  border-color: #999;
+}
+
+.size-chip.selected {
+  border-color: #0d0d0d;
+  background: #0d0d0d;
+  color: #fff;
 }
 
 .empty-hint {

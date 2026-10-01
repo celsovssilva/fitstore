@@ -40,13 +40,13 @@
 <!-- ===== HERO ===== -->
 <section class="hero">
   <div class="container hero-inner">
-    <h1>Tudo pro seu treino <span class="highlight">em um só lugar</span></h1>
-    <p>Escolha os produtos, monte seu pedido e finalize direto no WhatsApp com nosso time.</p>
+    <h1>Moda fitness <span class="highlight">pra todo o treino</span></h1>
+    <p>Escolha o tamanho, monte seu pedido e finalize direto no WhatsApp com nosso time.</p>
     <a class="btn btn-primary" href="#produtos">Ver produtos</a>
   </div>
 </section>
 
-
+<!-- ===== PROMOÇÕES / CATEGORIA SELECIONADA ===== -->
 <section class="container" id="produtos">
 
   <!-- ===== ABAS ===== -->
@@ -62,6 +62,7 @@
     </button>
   </div>
 
+  <!-- ===== ABA: PROMOÇÕES ===== -->
   <div *ngIf="activeFilter === null">
     <div class="promo-grid">
       <div class="product-card promo-card" *ngFor="let product of promoProducts">
@@ -74,6 +75,20 @@
           <div class="price-row">
             <span class="old-price" *ngIf="product.oldPrice">R$ {{ product.oldPrice.toFixed(2) }}</span>
             <span class="product-price">R$ {{ product.price.toFixed(2) }}</span>
+          </div>
+
+          <!-- ===== SELETOR DE TAMANHO ===== -->
+          <div class="size-selector" *ngIf="hasSizes(product)">
+            <span class="size-label">Tamanho:</span>
+            <div class="size-options">
+              <button
+                *ngFor="let size of product.sizes"
+                class="size-chip"
+                [class.selected]="getSelectedSize(product) === size"
+                (click)="selectSize(product, size)">
+                {{ size }}
+              </button>
+            </div>
           </div>
 
           <div class="product-actions">
@@ -107,6 +122,20 @@
             <span class="product-price">R$ {{ product.price.toFixed(2) }}</span>
           </div>
 
+          <!-- ===== SELETOR DE TAMANHO ===== -->
+          <div class="size-selector" *ngIf="hasSizes(product)">
+            <span class="size-label">Tamanho:</span>
+            <div class="size-options">
+              <button
+                *ngFor="let size of product.sizes"
+                class="size-chip"
+                [class.selected]="getSelectedSize(product) === size"
+                (click)="selectSize(product, size)">
+                {{ size }}
+              </button>
+            </div>
+          </div>
+
           <div class="product-actions">
             <button
               class="btn btn-outline"
@@ -129,6 +158,7 @@
 
 </section>
 
+<!-- ===== BARRA FLUTUANTE DO CARRINHO ===== -->
 <div class="cart-bar" *ngIf="cartCount > 0">
   <div class="container cart-bar-inner">
     <div class="cart-info">
@@ -141,7 +171,7 @@
   </div>
 </div>
 
-
+<!-- ===== FOOTER ===== -->
 <footer class="footer">
   <div class="container">
     <p>© {{ storeName }} — Todos os direitos reservados.</p>
